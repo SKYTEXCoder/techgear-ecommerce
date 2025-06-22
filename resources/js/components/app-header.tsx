@@ -1,19 +1,12 @@
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { Icon } from '@/components/icon';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { NavigationMenu, NavigationMenuItem, NavigationMenuList, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { UserMenuContent } from '@/components/user-menu-content';
 import { useInitials } from '@/hooks/use-initials';
-import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Menu, Package, Star, User as UserIcon, XCircle } from 'lucide-react';
 import AppLogo from './app-logo';
-import AppLogoIcon from './app-logo-icon';
+import Navbar from './App/Navbar';
 
 const mainNavItems: NavItem[] = [
     {
@@ -36,6 +29,20 @@ const rightNavItems: NavItem[] = [
     },
 ];
 
+const navLinks: NavItem[] = [
+    { title: 'Home', href: '/' },
+    { title: 'Contact', href: '/contact' },
+    { title: 'About', href: '/about' },
+    { title: 'Sign Up', href: '/register' },
+];
+
+const userMenuItems: NavItem[] = [
+    { title: 'My Account', href: '/settings', icon: UserIcon },
+    { title: 'My Orders', href: '/orders', icon: Package },
+    { title: 'My Cancellations', href: '/cancellations', icon: XCircle },
+    { title: 'My Reviews', href: '/reviews', icon: Star },
+];
+
 const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
 
 interface AppHeaderProps {
@@ -48,8 +55,21 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const getInitials = useInitials();
     return (
         <>
-            <div className="border-b border-sidebar-border/80">
-                <div className="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
+            {/* Welcome Banner - Now outside the main header */}
+            <div className="w-full bg-neutral-500 dark:bg-neutral-950">
+                <div className="container mx-auto px-4">
+                    <div className="py-2 text-center text-sm text-white">
+                        <p>
+                            Welcome to <b>TechGear</b> - Buka Setiap Hari, 07:00-22:00 WIB
+                            <a href="#" className="ml-2 font-bold underline">
+                                SHOP NOW!
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div className="border-b border-gray-200 bg-white dark:border-neutral-800 dark:bg-neutral-950">
+                <div className="container mx-auto flex h-20 items-center px-4">
                     {/* Mobile Menu */}
                     <div className="lg:hidden">
                         <Sheet>
@@ -58,48 +78,33 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                     <Menu className="h-5 w-5" />
                                 </Button>
                             </SheetTrigger>
-                            <SheetContent side="left" className="flex h-full w-64 flex-col items-stretch justify-between bg-sidebar">
-                                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                                <SheetHeader className="flex justify-start text-left">
-                                    <AppLogoIcon className="h-6 w-6 fill-current text-black dark:text-white" />
+                            <SheetContent side="left" className="flex w-64 flex-col p-4 dark:border-neutral-800 dark:bg-neutral-950">
+                                <SheetHeader className="mb-4 text-left">
+                                    <SheetTitle>
+                                        <Link
+                                            href="/dashboard"
+                                            prefetch
+                                            className="flex items-center space-x-2 text-xl font-bold tracking-wider text-black dark:text-white"
+                                        >
+                                            <AppLogo />
+                                        </Link>
+                                    </SheetTitle>
                                 </SheetHeader>
-                                <div className="flex h-full flex-1 flex-col space-y-4 p-4">
-                                    <div className="flex h-full flex-col justify-between text-sm">
-                                        <div className="flex flex-col space-y-4">
-                                            {mainNavItems.map((item) => (
-                                                <Link key={item.title} href={item.href} className="flex items-center space-x-2 font-medium">
-                                                    {item.icon && <Icon iconNode={item.icon} className="h-5 w-5" />}
-                                                    <span>{item.title}</span>
-                                                </Link>
-                                            ))}
-                                        </div>
-
-                                        <div className="flex flex-col space-y-4">
-                                            {rightNavItems.map((item) => (
-                                                <a
-                                                    key={item.title}
-                                                    href={item.href}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="flex items-center space-x-2 font-medium"
-                                                >
-                                                    {item.icon && <Icon iconNode={item.icon} className="h-5 w-5" />}
-                                                    <span>{item.title}</span>
-                                                </a>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
+                                <nav className="flex flex-col space-y-3">
+                                    {navLinks.map((item) => (
+                                        <Link key={item.title} href={item.href} className="text-base font-medium">
+                                            {item.title}
+                                        </Link>
+                                    ))}
+                                </nav>
                             </SheetContent>
                         </Sheet>
                     </div>
 
-                    <Link href="/dashboard" prefetch className="flex items-center space-x-2">
-                        <AppLogo />
-                    </Link>
-
                     {/* Desktop Navigation */}
-                    <div className="ml-6 hidden h-full items-center space-x-6 lg:flex">
+                    <Navbar navLinks={navLinks} userMenuItems={userMenuItems} user={auth.user} url={page.url} />
+
+                    {/* <div className="ml-6 hidden h-full items-center space-x-6 lg:flex">
                         <NavigationMenu className="flex h-full items-stretch">
                             <NavigationMenuList className="flex h-full items-stretch space-x-2">
                                 {mainNavItems.map((item, index) => (
@@ -167,12 +172,12 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 <UserMenuContent user={auth.user} />
                             </DropdownMenuContent>
                         </DropdownMenu>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             {breadcrumbs.length > 1 && (
                 <div className="flex w-full border-b border-sidebar-border/70">
-                    <div className="mx-auto flex h-12 w-full items-center justify-start px-4 text-neutral-500 md:max-w-7xl">
+                    <div className="container mx-auto flex h-14 w-full items-center justify-start px-4 text-neutral-500 md:max-w-7xl">
                         <Breadcrumbs breadcrumbs={breadcrumbs} />
                     </div>
                 </div>

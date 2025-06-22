@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use \Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable // implements MustVerifyEmail, FilamentUser
 {
@@ -80,4 +82,15 @@ class User extends Authenticatable // implements MustVerifyEmail, FilamentUser
             $this->attributes['last_name'] = $parts[1] ?? null;
         }
     } */
+
+    protected function profilePhotoURL(): Attribute {
+        return Attribute::get(function (): string {
+            return $this->image ? Storage::disk('public')->url($this->image) : $this->defaultProfilePhotoURL();
+        });
+    }
+
+    protected function defaultProfilePhotoURL(): string {
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=FFFFFF&background=EF4444';
+    }
+
 }
