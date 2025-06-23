@@ -6,6 +6,7 @@ import { type NavItem, type User } from '@/types';
 import { Link } from '@inertiajs/react';
 import { Heart, LogOut, LogIn, UserPlus, Search, ShoppingCart, User as UserIcon } from 'lucide-react';
 import AppLogo from '../app-logo';
+import AppearanceToggleTab from '../ui/appearance-switch-toggle-tab';
 
 interface NavbarProperties {
     navLinks: NavItem[];
@@ -138,6 +139,7 @@ function Navbar({ navLinks, userMenuItems, user, url }: NavbarProperties) {
                         </Button>
                     </>
                 )}
+                <AppearanceToggleTab className=''></AppearanceToggleTab>
             </div>
         </div>
     );

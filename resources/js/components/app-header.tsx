@@ -7,6 +7,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, Menu, Package, Star, User as UserIcon, XCircle } from 'lucide-react';
 import AppLogo from './app-logo';
 import Navbar from './App/Navbar';
+import WelcomeBanner from '@/components/App/WelcomeBanner';
 
 const mainNavItems: NavItem[] = [
     {
@@ -56,20 +57,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     return (
         <>
             {/* Welcome Banner - Now outside the main header */}
-            <div className="w-full bg-neutral-500 dark:bg-neutral-950">
-                <div className="container mx-auto px-4">
-                    <div className="py-2 text-center text-sm text-white">
-                        <p>
-                            Welcome to <b>TechGear</b> - Buka Setiap Hari, 07:00-22:00 WIB
-                            <a href="#" className="ml-2 font-bold underline">
-                                SHOP NOW!
-                            </a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div className="border-b border-gray-200 bg-white dark:border-neutral-800 dark:bg-neutral-950">
-                <div className="container mx-auto flex h-20 items-center px-4">
+            <WelcomeBanner />
+            <div className="sticky top-0 z-50 border-b border-gray-200 bg-white dark:border-neutral-800 dark:bg-neutral-950">
+                <div className="container mx-auto flex h-17 items-center px-4">
                     {/* Mobile Menu */}
                     <div className="lg:hidden">
                         <Sheet>
