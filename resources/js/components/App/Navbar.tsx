@@ -19,7 +19,7 @@ function Navbar({ navLinks, userMenuItems, user, url }: NavbarProperties) {
     return (
         <div className="hidden w-full items-center justify-between lg:flex">
             {/* Application TechGear Logo */}
-            <Link href="/dashboard" prefetch className="flex items-center space-x-2">
+            <Link href={route('home')} prefetch className="flex items-center space-x-2">
                 <AppLogo />
             </Link>
 
@@ -31,7 +31,7 @@ function Navbar({ navLinks, userMenuItems, user, url }: NavbarProperties) {
                         href={link.href}
                         className={cn(
                             'border-b-2 text-black transition-colors dark:text-white',
-                            url === link.href ? 'border-black' : 'border-transparent hover:border-black dark:hover:border-white',
+                            url === link.href ? 'border-black dark:border-white' : 'border-transparent hover:border-black dark:hover:border-white',
                         )}
                     >
                         {link.title}
