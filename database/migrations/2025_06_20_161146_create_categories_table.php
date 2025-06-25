@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('image')->nullable();
             $table->unsignedInteger('depth')->default(0);
-            $table->foreignId('department_id')->constrained('departments', 'id')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('parent_category_id')->nullable()->constrained('categories', 'id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('department_id')->index()->constrained('departments', 'id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('parent_category_id')->nullable()->index()->constrained('categories', 'id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->json('filterable_specifications')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
