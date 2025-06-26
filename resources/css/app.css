@@ -2,8 +2,13 @@
 
 @plugin 'tailwindcss-animate';
 
+@source "../**/*.blade.php";
+@source "../**/*.js";
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source "../../storage/framework/views/*.php";
+
+/* @plugin "daisyui"; */
 
 @custom-variant dark (&:is(.dark *));
 

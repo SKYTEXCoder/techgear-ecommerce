@@ -5,6 +5,7 @@ namespace App\Filament\Resources\DepartmentResource\RelationManagers;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -42,7 +43,8 @@ class CategoriesRelationManager extends RelationManager
                     ->required()
                     ->dehydrated()
                     ->unique(Category::class, 'slug', ignoreRecord: true)
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->helperText('Unique URL Identifier, usually auto-generated from the provided name.'),
 
                 Forms\Components\Select::make('parent_category_id')
                     ->live(true)
@@ -76,7 +78,14 @@ class CategoriesRelationManager extends RelationManager
                 Checkbox::make('is_active')
                     ->required()
                     ->default(true)
-                    ->label('Active'),
+                    ->label('Is Currently Active'),
+
+                Select::make('brands')
+                    ->relationship('brands', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable()
+                    ->label('Associated Brands')
             ]);
     }
 

@@ -10,10 +10,13 @@ use App\Models\Department;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\BooleanColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -42,10 +45,18 @@ class DepartmentResource extends Resource
                 TextInput::make('slug')
                     ->required(),
 
+                FileUpload::make('icon_svg_path')
+                    ->image()
+                    ->acceptedFileTypes(['image/svg+xml'])
+                    ->directory('departments/icons')
+                    ->label('Icon (SVG)')
+                    ->maxSize(2048)
+                    ->helperText('Upload an SVG icon for the department. Recommended size: 24x24px'),
+
                 Checkbox::make('is_active')
                     ->required()
                     ->default(true)
-                    ->label('Active'),
+                    ->label('Is Currently Active'),
 
                 Checkbox::make('has_new_products')
                     //->required()
@@ -55,7 +66,7 @@ class DepartmentResource extends Resource
                 Checkbox::make('is_currently_featured')
                     //->required()
                     ->default(false)
-                    ->label('Currently Featured'),
+                    ->label('Is Currently Featured'),
 
             ]);
     }
@@ -64,10 +75,42 @@ class DepartmentResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('icon_svg_path')
+                    ->label('SVG Icon')
+                    ->circular()
+                    ->height(40)
+                    ->width(40),
+
                 TextColumn::make('name')
                     ->label('Department Name')
                     ->sortable()
-                    ->searchable()
+                    ->searchable(),
+
+                TextColumn::make('slug')
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->copyable(),
+
+                BooleanColumn::make('is_currently_featured')
+                    ->label('Currently Featured')
+                    ->sortable(),
+
+                BooleanColumn::make('has_new_products')
+                    ->label('Has New Products')
+                    ->sortable(),
+
+                BooleanColumn::make('is_active')
+                    ->label('Active')
+                    ->sortable(),
+
+                TextColumn::make('created_at')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Created At')
+                    ->sortable(),
+
+                TextColumn::make('updated_at')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Updated At')
+                    ->sortable()
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([

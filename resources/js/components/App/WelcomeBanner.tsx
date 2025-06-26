@@ -6,7 +6,7 @@ function WelcomeBanner() {
             <div className="container mx-auto px-4">
                 <div className="py-2 text-center text-sm text-white">
                     <p>
-                        Welcome to <b>TechGear</b> - Buka Setiap Hari, 07:00-22:00 WIB
+                        Welcome to <b>TechGear</b> - Buka Setiap Hari, dari jam 07:00 s.d. 22:00 WIB
                         <a href="/" className="ml-2 font-bold underline">
                             SHOP NOW!
                         </a>
